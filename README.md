@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/28685853/README.md)
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
@@ -25,7 +26,137 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+## Project s# 🛒 E-Commerce Platform
+
+A full-stack e-commerce application built with NestJS, React, PostgreSQL, and Redis. Features JWT authentication with Redis token caching, product management, shopping cart, and order processing.
+
+## 🚀 Live Demo
+
+> [Add your Railway/Render link here]
+
+## ✨ Features
+
+- **Authentication** — JWT-based auth with Redis token caching for fast validation and instant logout
+- **Product Management** — Create, update, and publish products with image support
+- **Shopping Cart** — Add/remove items, update quantities, persistent cart state
+- **Orders** — Place orders, track order status, full purchase flow
+- **Role-based access** — Separate buyer and seller roles
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | NestJS (Node.js + TypeScript) |
+| Frontend | React |
+| Database | PostgreSQL |
+| Cache | Redis |
+| Auth | JWT + Redis token store |
+
+## 🏗 Architecture
+
+```
+React Frontend
+      │
+      ▼
+NestJS REST API
+  ├── Auth Module     → JWT issued, token cached in Redis
+  ├── Products Module → CRUD, publish/unpublish
+  ├── Cart Module     → Session cart per user
+  └── Orders Module   → Create order from cart
+      │
+      ├── PostgreSQL  → Users, Products, Orders, Cart items
+      └── Redis       → Token cache, session store
+```
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL
+- Redis
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Abulai09/e-commerce-NEST.git
+cd e-commerce-NEST
+
+# Install backend dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your DB and Redis credentials
+
+# Run database migrations
+npm run migration:run
+
+# Start development server
+npm run start:dev
+```
+
+### Environment Variables
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/ecommerce
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+```
+
+## 📡 API Endpoints
+
+### Auth
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login, returns JWT |
+| POST | `/auth/logout` | Invalidate token in Redis |
+
+### Products
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/products` | List all products |
+| POST | `/products` | Create product (seller) |
+| PATCH | `/products/:id` | Update product |
+| DELETE | `/products/:id` | Delete product |
+
+### Cart & Orders
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/cart` | Get current cart |
+| POST | `/cart/add` | Add item to cart |
+| POST | `/orders` | Place order from cart |
+| GET | `/orders` | Get order history |
+
+## 📂 Project Structure
+
+```
+src/
+├── auth/           # JWT auth, guards, Redis token store
+├── users/          # User entity and service
+├── products/       # Product CRUD and publishing
+├── cart/           # Cart management
+├── orders/         # Order processing
+└── common/         # Guards, decorators, interceptors
+```
+
+## 🔐 How Redis Token Caching Works
+
+When a user logs in, the JWT token is stored in Redis with a TTL matching the token expiry. On every protected request, the guard checks Redis first — this enables instant token invalidation on logout without waiting for JWT expiry.
+
+```
+Login  → issue JWT → store in Redis (TTL: 7d)
+Request → check Redis → valid? → allow
+Logout → delete from Redis → token instantly invalid
+```
+
+## 📄 License
+
+MIT
+etup
 
 ```bash
 $ npm install
